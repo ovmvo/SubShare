@@ -1,0 +1,1141 @@
+port: 7890
+socks-port: 7891
+mixed-port: 10801
+redir-port: 7892
+tproxy-port: 7893
+allow-lan: true
+bind-address: "*"
+find-process-mode: strict
+mode: rule
+secret: ""
+unified-delay: false
+tcp-concurrent: true
+geodata-mode: false
+skip-auth-prefixes:
+    - 127.0.0.1/32
+authentication: []
+lan-allowed-ips:
+    - 0.0.0.0/0
+    - ::/0
+lan-disallowed-ips: []
+geox-url:
+    geoip: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.dat"
+    geosite: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geosite.dat"
+    mmdb: "https://fastly.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip.metadb"
+geo-auto-update: true
+geo-update-interval: 24
+log-level: silent
+ipv6: false
+external-controller: 0.0.0.0:9090 # 
+external-controller-tls: 0.0.0.0:9443
+external-controller-unix: mihomo.sock
+external-controller-pipe: \\.\pipe\mihomo
+external-ui: ui
+external-ui-url: "https://github.com/Zephyruso/zashboard/archive/refs/heads/gh-pages.zip"
+external-doh-server: /dns-query
+global-client-fingerprint: chrome
+profile:
+    store-selected: false
+    store-fake-ip: true
+sniffer:
+    enable: true
+    sniff:
+        HTTP:
+            ports: [80, 8080-8880]
+            override-destination: true
+        TLS:
+            ports: [443, 8443]
+        QUIC:
+            ports: [443, 8443]
+    skip-domain:
+        - "Mijia Cloud"
+        - "+.push.apple.com"
+tun:
+    enable: true
+    stack: system
+    auto-route: true
+    auto-redirect: true
+    auto-detect-interface: true
+    dns-hijack:
+        - any:53
+        - tcp://any:53
+    device: mihomo
+    mtu: 9000
+    strict-route: false
+    gso: true
+    gso-max-size: 65536
+    udp-timeout: 300
+    iproute2-table-index: 2022
+    iproute2-rule-index: 9000
+    endpoint-independent-nat: false
+    route-exclude-address:
+        - 172.16.0.0/12
+        - fc00::/7
+dns:
+    enable: true
+    listen: 0.0.0.0:53
+    ipv6: false
+    default-nameserver: [223.5.5.5, 119.29.29.29]
+    enhanced-mode: fake-ip
+    fake-ip-range: 198.18.0.1/16
+    use-hosts: true
+    nameserver: ['https://doh.pub/dns-query', 'https://dns.alidns.com/dns-query']
+    url-test: ['https://doh.dns.sb/dns-query', 'https://dns.cloudflare.com/dns-query', 'https://dns.twnic.tw/dns-query', 'tls://8.8.4.4:853']
+    url-test-filter: {geoip: true, ipcidr: [240.0.0.0/4, 0.0.0.0/32]}
+proxy-groups:
+    - name: Proxy
+      type: select
+      interval: 300
+      url: https://gstatic.com/generate_204
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - "\U0001F64F 自动选择"
+        - "\U0001F4AA 手动选择"
+        - "\U0001F3A1负载均衡"
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/mihomo-party-org/mihomo-party/resources/icon.png
+    - name: Cloudflare
+      type: select
+      interval: 300
+      url: https://gstatic.com/generate_204
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - Proxy
+        - DIRECT
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/cloudflare.png
+    - name: Bing
+      type: select
+      interval: 300
+      url: https://gstatic.com/generate_204
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - DIRECT
+        - Proxy
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/microsoft-bing.png
+    - name: Github
+      type: select
+      interval: 300
+      url: https://github.com
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - Proxy
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/github.png
+    - name: OpenAI
+      type: select
+      interval: 300
+      url: https://openai.com
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - "\U0001F64F 自动选择"
+        - "\U0001F4AA 手动选择"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1F9\U0001F1FC 台湾节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/chatgpt.png
+    - name: Netflix
+      type: select
+      interval: 300
+      url: https://netflix.com
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - "\U0001F64F 自动选择"
+        - "\U0001F4AA 手动选择"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1F9\U0001F1FC 台湾节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/netflix.png
+    - name: Disney+
+      type: select
+      interval: 300
+      url: https://disney.com
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - "\U0001F64F 自动选择"
+        - "\U0001F4AA 手动选择"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1F9\U0001F1FC 台湾节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/disney-plus.png
+    - name: YouTube
+      type: select
+      interval: 300
+      url: https://youtube.com
+      lazy: true
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - "\U0001F64F 自动选择"
+        - "\U0001F4AA 手动选择"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1F9\U0001F1FC 台湾节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/youtube.png
+    - name: TikTok
+      type: select
+      proxies:
+        - Proxy
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/tiktok.png
+    - name: Spotify
+      type: select
+      proxies:
+        - Proxy
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/spotify.png
+    - name: Telegram
+      type: select
+      url: https://telegram.org
+      interval: 300
+      timeout: 2000
+      max-failed-times: 3
+      proxies:
+        - Proxy
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/telegram.png
+    - name: Microsoft
+      type: select
+      proxies:
+        - Proxy
+        - DIRECT
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/microsoft.png
+    - name: Onedrive
+      type: select
+      proxies:
+        - DIRECT
+        - Proxy
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/microsoft-onedrive.png
+    - name: Apple
+      type: select
+      proxies:
+        - DIRECT
+        - Proxy
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/apple.png
+    - name: Gamer
+      type: select
+      include-all: true
+      filter: "^(?=.*((?i)游戏|\U0001F3AE|(\\b(GAME)\\b)))(?!.*((?i)回国|校园)).*$"
+      proxies:
+        - DIRECT
+        - Proxy
+      icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/Game.png
+    - name: GlobalMedia
+      type: select
+      proxies:
+        - Proxy
+        - DIRECT
+        - "\U0001F1ED\U0001F1F0 香港节点"
+        - "\U0001F1EF\U0001F1F5 日本节点"
+        - "\U0001F1F0\U0001F1F7 韩国节点"
+        - "\U0001F1F8\U0001F1EC 新加坡节点"
+        - "\U0001F1FA\U0001F1F8 美国节点"
+        - "\U0001F1EC\U0001F1E7 英国节点"
+        - "\U0001F1EB\U0001F1F7 法国节点"
+        - "\U0001F1E9\U0001F1EA 德国节点"
+        - "\U0001F1E8\U0001F1E6 加拿大节点"
+        - "\U0001F1E6\U0001F1FA 澳大利亚节点"
+        - "\U0001F1F3\U0001F1F1 荷兰节点"
+        - "\U0001F1F7\U0001F1FA 俄罗斯节点"
+        - "\U0001F1ED\U0001F1FA 匈牙利节点"
+        - "\U0001F1FA\U0001F1E6 乌克兰节点"
+        - "\U0001F1F5\U0001F1F1 波兰节点"
+        - "\U0001F1EE\U0001F1F9 意大利节点"
+        - "\U0001F1EE\U0001F1F7 伊朗节点"
+      icon: https://cdn.jsdelivr.net/gh/Koolson/Qure/IconSet/Color/ForeignMedia.png
+    - name: "\U0001F4AA 手动选择"
+      type: select
+      include-all: true
+    - name: "\U0001F64F 自动选择"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      include-all: true
+    - name: "\U0001F3A1负载均衡"
+      type: load-balance
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      disable-udp: false
+      timeout: 2000
+      max-failed-times: 3
+      strategy: sticky-sessions
+      include-all: true
+    - name: "\U0001F1ED\U0001F1F0 香港节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)HK|香港|港"
+      include-all: true
+    - name: "\U0001F1F9\U0001F1FC 台湾节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)TW|台湾|台"
+      include-all: true
+    - name: "\U0001F1EF\U0001F1F5 日本节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)JP"
+      include-all: true
+    - name: "\U0001F1F0\U0001F1F7 韩国节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)KR|韩国|韩"
+      include-all: true
+    - name: "\U0001F1F8\U0001F1EC 新加坡节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)SG|新加坡|狮城"
+      include-all: true
+    - name: "\U0001F1FA\U0001F1F8 美国节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)US|美国|美"
+      include-all: true
+    - name: "\U0001F1EC\U0001F1E7 英国节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)UK|GB|英国|英"
+      include-all: true
+    - name: "\U0001F1EB\U0001F1F7 法国节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)FR|法国|法"
+      include-all: true
+    - name: "\U0001F1E9\U0001F1EA 德国节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)DE|德国|德"
+      include-all: true
+    - name: "\U0001F1E8\U0001F1E6 加拿大节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)CA|加拿大"
+      include-all: true
+    - name: "\U0001F1E6\U0001F1FA 澳大利亚节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)AU|澳大利亚|澳洲"
+      include-all: true
+    - name: "\U0001F1F3\U0001F1F1 荷兰节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)NL|荷兰"
+      include-all: true
+    - name: "\U0001F1F7\U0001F1FA 俄罗斯节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)RU|俄罗斯|俄"
+      include-all: true
+    - name: "\U0001F1ED\U0001F1FA 匈牙利节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)HU|匈牙利"
+      include-all: true
+    - name: "\U0001F1FA\U0001F1E6 乌克兰节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)UA|乌克兰"
+      include-all: true
+    - name: "\U0001F1F5\U0001F1F1 波兰节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)PL|波兰"
+      include-all: true
+    - name: "\U0001F1EE\U0001F1F9 意大利节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)IT|意大利"
+      include-all: true
+    - name: "\U0001F1EE\U0001F1F7 伊朗节点"
+      type: url-test
+      tolerance: 100
+      interval: 60
+      lazy: true
+      url: https://gstatic.com/generate_204
+      timeout: 2000
+      max-failed-times: 3
+      filter: "(?i)IR|伊朗"
+      include-all: true
+
+rule-providers:
+    GlobalMedia:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml
+        path: ./RuleSet/GlobalMedia.yaml
+    ChinaMedia:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ChinaMedia/ChinaMedia.yaml
+        path: ./RuleSet/ChinaMedia.yaml
+    Netflix:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Netflix/Netflix_Classical_No_Resolve.yaml
+        path: ./RuleSet/Netflix.yaml
+    Disney+:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Disney/Disney_No_Resolve.yaml
+        path: ./RuleSet/Disney+.yaml
+    YouTube:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/YouTube/YouTube_No_Resolve.yaml
+        path: ./RuleSet/YouTube.yaml
+    Apple:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Apple/Apple_Classical_No_Resolve.yaml
+        path: ./RuleSet/Apple.yaml
+    Microsoft:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Microsoft/Microsoft_No_Resolve.yaml
+        path: ./RuleSet/Microsoft.yaml
+    Nintendo:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Nintendo/Nintendo.yaml
+        path: ./RuleSet/Nintendo.yaml
+    PlayStation:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/PlayStation/PlayStation.yaml
+        path: ./RuleSet/PlayStation.yaml
+    Epic:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Epic/Epic.yaml
+        path: ./RuleSet/Epic.yaml
+    Xbox:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Xbox/Xbox.yaml
+        path: ./RuleSet/Xbox.yaml
+    TikTok:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/TikTok/TikTok_No_Resolve.yaml
+        path: ./RuleSet/TikTok.yaml
+    Spotify:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Spotify/Spotify.yaml
+        path: ./RuleSet/Spotify.yaml
+    OpenAI:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OpenAI/OpenAI_No_Resolve.yaml
+        path: ./RuleSet/OpenAI.yaml
+    Proxy:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Proxy/Proxy_Classical_No_Resolve.yaml
+        path: ./RuleSet/Proxy.yaml
+    China:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/ChinaMax/ChinaMax_Classical.yaml
+        path: ./RuleSet/China.yaml
+    Tencent:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Tencent/Tencent.yaml
+        path: ./RuleSet/Tencent.yaml
+    LAN:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Lan/Lan.yaml
+        path: ./RuleSet/LAN.yaml
+    Cloudflare:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Cloudflare/Cloudflare.yaml
+        path: ./RuleSet/Cloudflare.yaml
+    Onedrive:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/OneDrive/OneDrive.yaml
+        path: ./RuleSet/Onedrive.yaml
+    Bing:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Bing/Bing.yaml
+        path: ./RuleSet/Bing.yaml
+    Github:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/GitHub/GitHub.yaml
+        path: ./RuleSet/Github.yaml
+    Telegram:
+        type: http
+        behavior: classical
+        interval: 86400
+        format: yaml
+        proxy: DIRECT
+        url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Telegram/Telegram.yaml
+        path: ./RuleSet/Telegram.yaml
+rules:
+    - RULE-SET,ChinaMedia,DIRECT
+    - RULE-SET,China,DIRECT
+    - RULE-SET,LAN,DIRECT
+    - GEOIP,CN,DIRECT
+    - RULE-SET,ChinaMedia,DIRECT
+    - RULE-SET,China,DIRECT
+    - RULE-SET,LAN,DIRECT
+    - GEOIP,CN,DIRECT
+    - RULE-SET,OpenAI,OpenAI
+    - RULE-SET,Cloudflare,Cloudflare
+    - RULE-SET,Github,Github
+    - RULE-SET,Onedrive,Onedrive
+    - RULE-SET,Bing,Bing
+    - RULE-SET,Apple,Apple
+    - RULE-SET,Spotify,Spotify
+    - RULE-SET,TikTok,TikTok
+    - RULE-SET,Netflix,Netflix
+    - RULE-SET,Disney+,Disney+
+    - RULE-SET,YouTube,YouTube
+    - RULE-SET,Telegram,Telegram
+    - RULE-SET,Nintendo,Gamer
+    - RULE-SET,PlayStation,Gamer
+    - RULE-SET,Epic,Gamer
+    - RULE-SET,Xbox,Gamer
+    - RULE-SET,Microsoft,Microsoft
+    - RULE-SET,GlobalMedia,GlobalMedia
+    - RULE-SET,Proxy,Proxy
+    - MATCH,Proxy
+
+proxies:
+ - {"alpn":["h2","http/1.1"],"client-fingerprint":"chrome","name":" t.me/PFSub | 🇯🇵 JP 001 | ⬇️ 379KB/s","password":"bbb7500a-5400-4396-a744-f35ceb870b0f","port":30000,"server":"jp1.ootx.ru","skip-cert-verify":true,"sni":"dl.cdn-internal-v5.com","type":"anytls","udp":true}
+ - {"alpn":["h2","http/1.1"],"client-fingerprint":"chrome","name":" t.me/PFSub | 🇸🇬 SG 002 | ⬇️ 1MB/s","password":"bbb7500a-5400-4396-a744-f35ceb870b0f","port":30000,"server":"sg4.ootx.ru","skip-cert-verify":true,"sni":"dl.cdn-internal-v5.com","type":"anytls","udp":true}
+ - {"alpn":["h2","http/1.1"],"client-fingerprint":"chrome","name":" t.me/PFSub | 🇸🇬 SG 003 | ⬇️ 1MB/s","password":"bbb7500a-5400-4396-a744-f35ceb870b0f","port":30000,"server":"sg3.ootx.ru","skip-cert-verify":true,"sni":"dl.cdn-internal-v5.com","type":"anytls","udp":true}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 004 | ⬇️ 65KB/s","password":"","port":1090,"server":"121.169.46.116","type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇬🇧 GB 005 | ⬇️ 2MB/s","network":"tcp","port":443,"server":"s128.okgfw.top","servername":"u710297u8a10s128.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 006 | ⬇️ 303KB/s","network":"tcp","port":443,"server":"s725.ccgfw.top","servername":"u710297ua16es725.ccgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"cipher":"chacha20-ietf-poly1305","name":" t.me/PFSub | 🇨🇿 CZ 007 | ⬇️ 17KB/s","password":"Cikn5gPJtNZqurNBPspEDz","port":24604,"server":"45.12.109.198","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 008 | ⬇️ 234KB/s","network":"tcp","port":443,"server":"s726.ccgfw.top","servername":"u710297u5534s726.ccgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 009 | ⬇️ 625KB/s","network":"ws","port":8880,"server":"africa.visa.com","type":"vless","udp":true,"uuid":"623d675e-8748-4881-ac0f-dc1a10b595b1","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"vahidasd1988-se08ot-3.vahidasd1988.workers.dev","User-Agent":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"},"max-early-data":2560,"path":"/"},"xudp":true}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 010 | ⬇️ 9MB/s","network":"tcp","port":443,"server":"s193.okgfw.top","servername":"u710297u2e89s193.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 011 | ⬇️ 8MB/s","network":"tcp","port":443,"server":"193.142.59.180","servername":"u710297u0236s148.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 012 | ⬇️ 401KB/s","network":"tcp","port":443,"server":"193.142.59.180","servername":"u710297u0236s148.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 013 | ⬇️ 109KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","host":"u710297ua16es725.ccgfw.top","name":" t.me/PFSub | 🇳🇱 NL 014 | ⬇️ 388KB/s","network":"tcp","path":"/","port":443,"server":"s725.ccgfw.top","servername":"u710297ua16es725.ccgfw.top","skip-cert-verify":true,"tfo":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","host":"u710297u0236s148.okgfw.top","name":" t.me/PFSub | 🇳🇱 NL 015 | ⬇️ 856KB/s","network":"tcp","path":"/","port":443,"server":"193.142.59.180","servername":"u710297u0236s148.okgfw.top","skip-cert-verify":true,"tfo":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"randomized","name":" t.me/PFSub | 🇰🇷 KR 016 | ⬇️ 531KB/s","network":"ws","port":2096,"server":"104.17.128.1","servername":"azadnet-1ml.pages.dev","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"d0298536-d670-4045-bbb1-ddd5ea68683e","ws-opts":{"headers":{"Host":"azadnet-1ml.pages.dev"},"path":"/azadnet-1ml.pages.dev/?ed=2560\u0026PROT_TYPE=vless"}}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇷🇺 RU 017 | ⬇️ 21KB/s","network":"tcp","port":8081,"reality-opts":{"public-key":"EJKcPSl0dv7mtU26gg6tUmKPw_aDvO2AHraRgNn6B14","short-id":"425ba80cd1a821a8"},"server":"51.250.5.6","servername":"ads.x5.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"b8e03ade-a2a1-4cbb-b002-5e1148049735"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇯🇵 JP 018 | ⬇️ 8MB/s","network":"ws","port":4002,"server":"37.114.50.157","servername":"a3b0hudm3kx8.makuyo.dpdns.org","tls":true,"type":"vless","udp":true,"uuid":"00000000-0000-4000-8000-000000000000","ws-opts":{"headers":{"Host":"a3b0hudm3kx8.makuyo.dpdns.org"},"path":"/@Marisa_kristi"}}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 019 | ⬇️ 57KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"cipher":"auto","client-fingerprint":"chrome","name":" t.me/PFSub | 🇹🇷 TR 020 | ⬇️ 4MB/s","network":"none","port":56126,"server":"185.72.9.200","tls":false,"type":"vless","uuid":"9bde09b3-09b5-4d7a-b5fd-3fae8dfeed5a"}
+ - {"alpn":["h2","http/1.1"],"client-fingerprint":"chrome","name":" t.me/PFSub | 🇺🇸 US 021 | ⬇️ 171KB/s","password":"bbb7500a-5400-4396-a744-f35ceb870b0f","port":30000,"server":"us2.ootx.ru","skip-cert-verify":true,"sni":"dl.cdn-internal-v5.com","type":"anytls","udp":true}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇮 FI 022 | ⬇️ 63KB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"pekfYPV5U8EjfQ4_zS5c6I2NnOZ2jUlyMGAWa4FWPF4","short-id":"58c512b4422e2517"},"server":"78.153.139.68","servername":"images.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"fd8972d7-cf5e-11f0-9970-45e1d80c4039"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇬🇧 GB 023 | ⬇️ 781KB/s","network":"ws","port":80,"server":"104.17.15.87","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"f929cc78-e2a1-4ce3-8051-3e9538405144","ws-opts":{"headers":{"Host":"britain.xydcqd.workers.dev"},"path":"/@WireXnet?ed"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 024 | ⬇️ 1009KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇩🇪 DE 025 | ⬇️ 8MB/s","network":"tcp","port":8081,"reality-opts":{"public-key":"EJKcPSl0dv7mtU26gg6tUmKPw_aDvO2AHraRgNn6B14","short-id":"425ba80cd1a821a8"},"server":"185.170.154.71","servername":"www.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"b8e03ade-a2a1-4cbb-b002-5e1148049735"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 026 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 027 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 028 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 029 | ⬇️ 1007KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 030 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 031 | ⬇️ 879KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 032 | ⬇️ 986KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 033 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"Koma-YT.PAGeS.Dev"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 034 | ⬇️ 941KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 035 | ⬇️ 842KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 036 | ⬇️ 727KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 037 | ⬇️ 1009KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇷 FR 038 | ⬇️ 119KB/s","network":"tcp","port":443,"reality-opts":{"public-key":"ts59kFFpFo4FGLIZZEcCJIujNfTGI-wfnKGrEuwvm0E","short-id":"1d41089e2641"},"server":"95.174.94.202","servername":"nang.fasssst.online","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"3dd0a69b-dbc4-4b34-981f-4c70a4992036"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 039 | ⬇️ 987KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 040 | ⬇️ 728KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 041 | ⬇️ 1004KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 042 | ⬇️ 313KB/s","password":"","port":1090,"server":"121.169.46.116","type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇵🇱 PL 043 | ⬇️ 5MB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"J5ITJbg5FQFembAfkogKHHQB6DigsFXQxK7xu-QMWUs","short-id":"a20d3ed244c76426"},"server":"144.31.131.224","servername":"mold.speedload.online","tls":true,"type":"vless","udp":true,"uuid":"0ee2d410-3e64-4c41-a571-3e5d2b5b8982","xudp":true}
+ - {"alpn":["h2"],"name":" t.me/PFSub | 🇹🇼 TW 044 | ⬇️ 6MB/s","password":"dongtaiwang.com","port":59901,"server":"45.221.98.14","skip-cert-verify":true,"type":"anytls","udp":true}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 045 | ⬇️ 807KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇷🇺 RU 046 | ⬇️ 17KB/s","network":"tcp","port":443,"reality-opts":{"public-key":"V32osv0u9T3QItvyk4UgK-mjJuXkXLn4u_3pbk8eNgs","short-id":"9339"},"server":"94.126.207.245","servername":"api.vk.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"56022eef-4ade-4240-b0cc-eb006797e7ac"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇮 FI 047 | ⬇️ 41KB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"pekfYPV5U8EjfQ4_zS5c6I2NnOZ2jUlyMGAWa4FWPF4","short-id":"58c512b4422e2517"},"server":"78.153.139.68","servername":"images.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"fd8972d7-cf5e-11f0-9970-45e1d80c4039"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 048 | ⬇️ 340KB/s","password":"","port":1090,"server":"121.169.46.116","type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 049 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 050 | ⬇️ 134KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 051 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 052 | ⬇️ 797KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 053 | ⬇️ 3MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.207","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇨🇦 CA 054 | ⬇️ 14MB/s","network":"ws","port":2096,"server":"172.64.155.209","servername":"sni.111000.indevs.in","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"6202b230-417c-4d8e-b624-0f71afa9c75d","ws-opts":{"headers":{"Host":"sni.111000.indevs.in"},"path":"/?ed"}}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇳🇱 NL 055 | ⬇️ 427KB/s","network":"ws","port":80,"server":"104.19.96.214","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"8973c3c2-803f-41db-9efa-fbef67d47567","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"018.electrocellco-cf-018.workers.dev"},"max-early-data":2560,"path":"/eyJqdW5rIjoiUG43S1ZuZGxVOWo5IiwicHJvdG9jb2wiOiJ2bCIsIm1vZGUiOiJwcm94eWlwIiwicGFuZWxJUHMiOltdfQ=="}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇺🇸 US 056 | ⬇️ 6MB/s","network":"tcp","port":18959,"reality-opts":{"public-key":"-hwVEdgFkvjku8ESuDoAA7id5yGGv_zXBvBW_RdhmHA","short-id":"d557c6895d014075"},"server":"157.254.223.44","servername":"itunes.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"d0b3e27d-bbfc-4a3b-8e60-6973de8fcefa"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 057 | ⬇️ 1MB/s","password":"","port":1090,"server":"121.169.46.116","skip-cert-verify":true,"type":"socks5","username":""}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇸🇬 SG 058 | ⬇️ 12MB/s","network":"ws","port":2053,"server":"one.dash.cloudflare.com","servername":"wqdo76ww8ndc.chinat.indevs.in","tls":true,"type":"vless","udp":true,"uuid":"26524cce-d514-4014-a426-365fb266a14d","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"wqdo76ww8ndc.chinat.indevs.in"},"max-early-data":2560,"path":"/danfeng"}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 059 | ⬇️ 429KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 060 | ⬇️ 828KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.71 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"alpn":["h3"],"auth-str":"dongtaiwang.com","auth_str":"dongtaiwang.com","down":"55 Mbps","name":" t.me/PFSub | 🇺🇸 US 061 | ⬇️ 4MB/s","port":38845,"protocol":"udp","server":"208.87.243.151","skip-cert-verify":true,"sni":"www.bing.com","type":"hysteria","udp":true,"up":"11 Mbps"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 062 | ⬇️ 11KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.207","type":"ss"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇩🇪 DE 063 | ⬇️ 602KB/s","network":"ws","port":80,"server":"104.19.96.214","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"8973c3c2-803f-41db-9efa-fbef67d47567","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"018.electrocellco-cf-018.workers.dev"},"max-early-data":2560,"path":"/eyJqdW5rIjoiUG43S1ZuZGxVOWo5IiwicHJvdG9jb2wiOiJ2bCIsIm1vZGUiOiJwcm94eWlwIiwicGFuZWxJUHMiOltdfQ=="}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 064 | ⬇️ 100KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 065 | ⬇️ 728KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 066 | ⬇️ 14KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.236","type":"ss"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 067 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 068 | ⬇️ 27KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.206","type":"ss"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 069 | ⬇️ 50KB/s","port":1090,"server":"121.169.46.116","type":"socks5"}
+ - {"allowInsecure":"1","name":" t.me/PFSub | 🇺🇸 US 070 | ⬇️ 5MB/s","password":"ae74dd32-c336-4be4-9c15-f6108292b3e5","port":12053,"server":"us1.anliangjifei.top","skip-cert-verify":true,"sni":"us1.anliangjifei.top","type":"anytls","udp":true}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 071 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇩🇪 DE 072 | ⬇️ 4MB/s","network":"tcp","port":443,"reality-opts":{"public-key":"AYQOZFxjvHN-RIzKYEibwFiFsp03cdlWGdCmyFfuNVc","short-id":"4fa44664f6a566d3"},"server":"5.254.85.151","servername":"germany.scroogethebest.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"ccedb1b1-35f3-46d1-a85a-c699eef5f3e1"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 073 | ⬇️ 13KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 074 | ⬇️ 10KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.123","type":"ss"}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇷🇺 RU 075 | ⬇️ 19KB/s","network":"tcp","port":12443,"reality-opts":{"public-key":"a7_KyEavpDL_m5UTvJ1vd2Zz-_7oY93uavMhILlW1jU","short-id":"6ba85179e30d4fc2"},"server":"51.250.77.87","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"a774f61d-a518-4c61-902f-807797da6caf"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 076 | ⬇️ 12KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss","udp":true}
+ - {"client-fingerprint":"chrome","encryption":"none","http-opts":{"path":["/@monacoVPN@monacoVPN@monacoVPN@monacoVPN"]},"name":" t.me/PFSub | 🇨🇭 CH 077 | ⬇️ 11MB/s","network":"http","port":22,"server":"172.65.111.43","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"monacoVPN"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 078 | ⬇️ 2MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.236","type":"ss"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 079 | ⬇️ 620KB/s","network":"tcp","port":443,"server":"s193.okgfw.top","servername":"u710297u2e89s193.okgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"chrome","encryption":"none","http-opts":{"path":["/@monacoVPN@monacoVPN@monacoVPN@monacoVPN"]},"name":" t.me/PFSub | 🇨🇭 CH 080 | ⬇️ 11MB/s","network":"http","port":22,"server":"172.65.111.43","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"monacoVPN"}
+ - {"client-fingerprint":"firefox","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇷🇺 RU 081 | ⬇️ 565KB/s","network":"tcp","port":443,"reality-opts":{"public-key":"USofQYv7kUY03-QU-HllZ_QrE_9fft_zJMpSKsrybm8","short-id":"f67d7ff6d5fc5e0c"},"server":"178.250.243.210","servername":"yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"9ee1f470-2785-411d-aac3-5eb860d926fc"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 082 | ⬇️ 616KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.206","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 083 | ⬇️ 1MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 084 | ⬇️ 388KB/s","password":"","port":1090,"server":"121.169.46.116","skip-cert-verify":true,"type":"socks5","username":""}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 085 | ⬇️ 30KB/s","password":"","port":1090,"server":"121.169.46.116","type":"socks5","username":"Og%3D%3D"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 086 | ⬇️ 721KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.236","type":"ss"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 087 | ⬇️ 1MB/s","network":"tcp","port":443,"server":"s726.ccgfw.top","servername":"u710297u5534s726.ccgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇷🇺 RU 088 | ⬇️ 2MB/s","network":"tcp","port":443,"reality-opts":{"public-key":"sMMDn89-fJAD7VgeTJbdQTmyyUoyRucoMLMvVMm8hAM","short-id":"cfdbaa7f996dd0e9"},"server":"37.139.34.237","servername":"eh.vk.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"9ee1f470-2785-411d-aac3-5eb860d926fc"}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇷🇺 RU 089 | ⬇️ 122KB/s","network":"tcp","port":12443,"reality-opts":{"public-key":"a7_KyEavpDL_m5UTvJ1vd2Zz-_7oY93uavMhILlW1jU","short-id":"6ba85179e30d4fc2"},"server":"51.250.77.87","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"a774f61d-a518-4c61-902f-807797da6caf"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 090 | ⬇️ 477KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss","udp":true}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 091 | ⬇️ 17KB/s","password":"","port":1090,"server":"121.169.46.116","type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇮 FI 092 | ⬇️ 69KB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"pekfYPV5U8EjfQ4_zS5c6I2NnOZ2jUlyMGAWa4FWPF4","short-id":"58c512b4422e2517"},"server":"78.153.139.68","servername":"images.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"fd8972d7-cf5e-11f0-9970-45e1d80c4039"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 093 | ⬇️ 17KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.153","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 094 | ⬇️ 21KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.158","type":"ss"}
+ - {"name":" t.me/PFSub | 🇺🇸 US 095 | ⬇️ 197KB/s","password":"ae74dd32-c336-4be4-9c15-f6108292b3e5","port":12053,"server":"us1.anliangjifei.top","skip-cert-verify":true,"sni":"us1.anliangjifei.top","type":"anytls","udp":true}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 096 | ⬇️ 26KB/s","password":"","port":1090,"server":"121.169.46.116","skip-cert-verify":true,"type":"socks5","username":""}
+ - {"name":" t.me/PFSub | 🇺🇸 US 097 | ⬇️ 1MB/s","password":"ae74dd32-c336-4be4-9c15-f6108292b3e5","port":12053,"server":"us1.anliangjifei.top","skip-cert-verify":true,"sni":"us1.anliangjifei.top","type":"anytls","udp":true}
+ - {"client-fingerprint":"qq","encryption":"none","name":" t.me/PFSub | 🇷🇺 RU 098 | ⬇️ 15KB/s","network":"tcp","port":2012,"reality-opts":{"_spider-x":"/","public-key":"PR2DLfyxBYuwFiVnPg6v7Hrmsz6ufYqTxE8FTX2Tvko","short-id":"a6cb7a8f6b3c"},"server":"84.201.135.143","servername":"ads.x5.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"6b9eebae-5364-4335-a44a-b9526f6213ce"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 099 | ⬇️ 115KB/s","password":"","port":1090,"server":"121.169.46.116","type":"socks5","username":"Og%3D%3D"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 100 | ⬇️ 638KB/s","password":"","port":1090,"server":"121.169.46.116","type":"socks5","username":"Og%3D%3D"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 101 | ⬇️ 152KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇮 FI 102 | ⬇️ 106KB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"pekfYPV5U8EjfQ4_zS5c6I2NnOZ2jUlyMGAWa4FWPF4","short-id":"58c512b4422e2517"},"server":"78.153.139.68","servername":"images.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"fd8972d7-cf5e-11f0-9970-45e1d80c4039"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 103 | ⬇️ 1005KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇵🇱 PL 104 | ⬇️ 7MB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"J5ITJbg5FQFembAfkogKHHQB6DigsFXQxK7xu-QMWUs","short-id":"a20d3ed244c76426"},"server":"144.31.131.161","servername":"rus.speedload.online","tls":true,"type":"vless","udp":true,"uuid":"2dd1a15d-1426-413a-a3b8-a645788bc844","xudp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 105 | ⬇️ 3MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.73","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 106 | ⬇️ 192KB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"FkmYFobwxLMLEktYXywmjthuEYCZggITsxwPNasTKUg","short-id":"4a3ad88ff867a295"},"server":"84.201.174.221","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"42191252-2937-404a-a982-04519c71e26a"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 107 | ⬇️ 11KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 108 | ⬇️ 388KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.139","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 109 | ⬇️ 1MB/s","network":"ws","port":8005,"server":"45.145.42.170","servername":"sub.mot.ip-ddns.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"00000000-0000-4000-8000-000000000000","ws-opts":{"headers":{"Host":"sub.mot.ip-ddns.com"},"path":"/"}}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 110 | ⬇️ 958KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.141","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 111 | ⬇️ 14KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss","udp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 112 | ⬇️ 501KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss","udp":true}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇵🇱 PL 113 | ⬇️ 2MB/s","network":"tcp","port":443,"reality-opts":{"public-key":"wgoLhL4pRP0y6fu6He4qW_ElohCM_ANWJF3HEoUhNz4","short-id":"9c2378562188c3cb"},"server":"195.3.223.36","servername":"pl.denditop.site","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"0f44079e-f740-4c28-aac7-7898abdb3252"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 114 | ⬇️ 1MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.123","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 115 | ⬇️ 1KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss","udp":true}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 116 | ⬇️ 32KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 117 | ⬇️ 754KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 118 | ⬇️ 952KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 119 | ⬇️ 26KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 120 | ⬇️ 56KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇬🇧 GB 121 | ⬇️ 11MB/s","network":"ws","port":443,"server":"198.62.62.235","servername":"bank.alaska-tigr.info","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"bank.alaska-tigr.info"},"path":"/love"}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 122 | ⬇️ 1MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 123 | ⬇️ 26KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.70","type":"ss"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 124 | ⬇️ 94KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 125 | ⬇️ 7MB/s","network":"tcp","port":443,"reality-opts":{"public-key":"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg","short-id":"c39cc7310a"},"server":"143.20.236.51","servername":"yahoo.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"d65cc14c-f53f-4fe2-b262-97856601319c"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 126 | ⬇️ 76KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss"}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇺🇸 US 127 | ⬇️ 4MB/s","network":"tcp","port":23335,"reality-opts":{"public-key":"7Gi8eiUU9TIVbGuvSU16gl5-Aqt7tcCSB9x6CSxyvik","short-id":"67b1e94e4dd1ef90"},"server":"104.167.197.59","servername":"icloud.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"e384913f-8863-47b4-8858-a84b68abb4a6"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇷🇺 RU 128 | ⬇️ 2MB/s","network":"tcp","port":443,"reality-opts":{"public-key":"66kZLshj9fxAIQA7NsABohNwgiOcY71enc6as_Frqw0","short-id":"3c1523da43287ec4"},"server":"51.250.103.84","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"0f44079e-f740-4c28-aac7-7898abdb3252"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 129 | ⬇️ 3KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.161","type":"ss","udp":true}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 130 | ⬇️ 3KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 131 | ⬇️ 1MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.207","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 132 | ⬇️ 884KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.144","type":"ss"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇩🇪 DE 133 | ⬇️ 13KB/s","network":"tcp","port":2053,"reality-opts":{"public-key":"bftlOYObiJvcDxh0TIviXqVmmbJ5TQ9ggGgg4YUpKgk","short-id":"0a381e1fa211"},"server":"151.247.209.193","servername":"www.hetzner.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"a66f46d2-3804-4034-973d-2b4b5e7455aa"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇭🇰 HK 134 | ⬇️ 215KB/s","network":"ws","port":443,"server":"104.19.152.87","servername":"s6.oboob.cn","skip-cert-verify":true,"tfo":true,"tls":true,"type":"vless","udp":true,"uuid":"d2efa18a-9e8a-3057-91fe-90c8e620e49f","ws-opts":{"headers":{"Host":"s6.oboob.cn"},"path":"/db1024113a787392"}}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 135 | ⬇️ 7MB/s","network":"tcp","port":443,"server":"s193.okgfw.top","servername":"u710297u2e89s193.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 136 | ⬇️ 245KB/s","network":"tcp","port":443,"server":"193.142.59.180","servername":"u710297u0236s148.okgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 137 | ⬇️ 11MB/s","network":"tcp","port":443,"server":"193.142.59.180","servername":"u710297u0236s148.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 138 | ⬇️ 4MB/s","network":"tcp","port":443,"server":"s193.okgfw.top","servername":"u710297u2e89s193.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 139 | ⬇️ 305KB/s","network":"tcp","port":443,"server":"s726.ccgfw.top","servername":"u710297u5534s726.ccgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 140 | ⬇️ 1MB/s","network":"tcp","port":443,"server":"s124.okgfw.top","servername":"u710297uf57fs124.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 141 | ⬇️ 2MB/s","network":"tcp","port":443,"server":"s725.ccgfw.top","servername":"u710297ua16es725.ccgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 142 | ⬇️ 395KB/s","network":"tcp","port":443,"server":"s193.okgfw.top","servername":"u710297u2e89s193.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 143 | ⬇️ 4MB/s","network":"tcp","port":443,"server":"s193.okgfw.top","servername":"u710297u2e89s193.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 144 | ⬇️ 818KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.123","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 145 | ⬇️ 216KB/s","network":"tcp","port":443,"server":"s193.okgfw.top","servername":"u710297u2e89s193.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 146 | ⬇️ 2MB/s","network":"tcp","port":443,"server":"s725.ccgfw.top","servername":"u710297ua16es725.ccgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 147 | ⬇️ 769KB/s","password":"","port":1090,"server":"121.169.46.116","skip-cert-verify":true,"type":"socks5","username":""}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 148 | ⬇️ 7MB/s","network":"tcp","port":443,"server":"s124.okgfw.top","servername":"u710297uf57fs124.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 149 | ⬇️ 651KB/s","network":"tcp","port":443,"server":"s725.ccgfw.top","servername":"u710297ua16es725.ccgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 150 | ⬇️ 769KB/s","network":"tcp","port":443,"server":"s128.okgfw.top","servername":"u710297u8a10s128.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 151 | ⬇️ 352KB/s","network":"tcp","port":443,"server":"s736.ccgfw.top","servername":"u710297u833ds736.ccgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇺🇸 US 152 | ⬇️ 681KB/s","network":"ws","port":8880,"server":"yg1.ygkkk.dpdns.org","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"2f0f84ed-9e4c-40ef-8a6c-286839e11a63","ws-opts":{"headers":{"Host":"hmedrza.ghwhdr51.workers.dev"},"path":"/🔒"}}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 153 | ⬇️ 186KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 154 | ⬇️ 3MB/s","network":"tcp","port":443,"server":"s128.okgfw.top","servername":"u710297u8a10s128.okgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 155 | ⬇️ 5MB/s","network":"tcp","port":10191,"reality-opts":{"public-key":"4TFV3PXkZY1wdb3RnRBJUJ4NGV4uq3S6cqWirO041GE","short-id":"549f01ef"},"server":"5.181.177.119","servername":"support.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"78d0a329-7299-4272-8e9b-9bce507d5587"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 156 | ⬇️ 39KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.80","type":"ss"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 157 | ⬇️ 285KB/s","network":"tcp","port":443,"server":"s736.ccgfw.top","servername":"u710297u833ds736.ccgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 158 | ⬇️ 427KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss"}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇵🇱 PL 159 | ⬇️ 16KB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"FkmYFobwxLMLEktYXywmjthuEYCZggITsxwPNasTKUg","short-id":"43df3983229a1c73"},"server":"84.201.174.221","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"42191252-2937-404a-a982-04519c71e26a"}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 160 | ⬇️ 3MB/s","network":"tcp","port":443,"server":"s128.okgfw.top","servername":"u710297u8a10s128.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"alpn":["h2","http/1.1"],"client-fingerprint":"randomized","name":" t.me/PFSub | 🇩🇪 DE 161 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"koma-yt.pages.dev","sni":"Koma-YT.PAGeS.Dev","type":"trojan","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"koma-yt.pages.dev"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 162 | ⬇️ 1MB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 163 | ⬇️ 937KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 164 | ⬇️ 613KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss","udp":true}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇵🇱 PL 165 | ⬇️ 7MB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"J5ITJbg5FQFembAfkogKHHQB6DigsFXQxK7xu-QMWUs","short-id":"a20d3ed244c76426"},"server":"144.31.131.161","servername":"rus.speedload.online","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"2dd1a15d-1426-413a-a3b8-a645788bc844"}
+ - {"name":" t.me/PFSub | 🇰🇷 KR 166 | ⬇️ 176KB/s","port":1090,"server":"121.169.46.116","tls":false,"type":"socks5","username":"Og%3D%3D"}
+ - {"client-fingerprint":"chrome","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇵🇱 PL 167 | ⬇️ 7MB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"J5ITJbg5FQFembAfkogKHHQB6DigsFXQxK7xu-QMWUs","short-id":"a20d3ed244c76426"},"server":"144.31.131.224","servername":"mold.speedload.online","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"0ee2d410-3e64-4c41-a571-3e5d2b5b8982"}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇮 FI 168 | ⬇️ 13KB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"pekfYPV5U8EjfQ4_zS5c6I2NnOZ2jUlyMGAWa4FWPF4","short-id":"58c512b4422e2517"},"server":"78.153.139.68","servername":"images.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"fd8972d7-cf5e-11f0-9970-45e1d80c4039"}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 169 | ⬇️ 29KB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"FkmYFobwxLMLEktYXywmjthuEYCZggITsxwPNasTKUg","short-id":"17f0f0e38f01af5a"},"server":"188.68.218.21","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"42191252-2937-404a-a982-04519c71e26a"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 170 | ⬇️ 579KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.216","type":"ss"}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 171 | ⬇️ 5MB/s","network":"tcp","port":443,"server":"s124.okgfw.top","servername":"u710297uf57fs124.okgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇺🇸 US 172 | ⬇️ 15MB/s","network":"ws","port":443,"server":"198.62.62.248","servername":"tar.alabama-tigr.info","tls":true,"type":"vless","udp":true,"uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"tar.alabama-tigr.info","User-Agent":"Mozilla/5.0 (X11; Datanyze; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},"path":"/love"},"xudp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 173 | ⬇️ 842KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇺🇸 US 174 | ⬇️ 12MB/s","network":"ws","port":443,"server":"198.62.62.248","servername":"tar.alabama-tigr.info","tls":true,"type":"vless","udp":true,"uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"tar.alabama-tigr.info","User-Agent":"Mozilla/5.0 (X11; Datanyze; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"},"path":"/love"},"xudp":true}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇺🇸 US 175 | ⬇️ 16MB/s","network":"ws","port":443,"server":"198.62.62.248","servername":"tar.alabama-tigr.info","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"tar.alabama-tigr.info"},"path":"/love"}}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 176 | ⬇️ 109KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 177 | ⬇️ 18KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.73","type":"ss"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇺🇸 US 178 | ⬇️ 15MB/s","network":"ws","port":443,"server":"198.62.62.248","servername":"tar.alabama-tigr.info","tls":true,"type":"vless","uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"tar.alabama-tigr.info"},"path":"/love"}}
+ - {"client-fingerprint":"qq","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇧🇾 BY 179 | ⬇️ 28KB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"0L6FE1vTechnKhN9LxFgmcDzqGVIfEQz8ZBGfvzKGzg","short-id":"79400b6f0813381c"},"server":"hb-by2.cdns.su","servername":"hb-by2.cdns.su","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"c67f81df-34e8-4cb3-ab43-599585775fa9"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 180 | ⬇️ 921KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss","udp":true}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇮 FI 181 | ⬇️ 34KB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"pekfYPV5U8EjfQ4_zS5c6I2NnOZ2jUlyMGAWa4FWPF4","short-id":"58c512b4422e2517"},"server":"78.153.139.68","servername":"images.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"fd8972d7-cf5e-11f0-9970-45e1d80c4039"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇺🇸 US 182 | ⬇️ 15MB/s","network":"ws","port":443,"server":"198.62.62.248","servername":"tar.alabama-tigr.info","tls":true,"type":"vless","uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"tar.alabama-tigr.info"},"path":"/love"}}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 183 | ⬇️ 1MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇺🇸 US 184 | ⬇️ 14MB/s","network":"ws","port":443,"server":"198.62.62.248","servername":"tar.alabama-tigr.info","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"tar.alabama-tigr.info"},"path":"/love"}}
+ - {"client-fingerprint":"random","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇫🇮 FI 185 | ⬇️ 43KB/s","network":"tcp","port":8443,"reality-opts":{"public-key":"pekfYPV5U8EjfQ4_zS5c6I2NnOZ2jUlyMGAWa4FWPF4","short-id":"58c512b4422e2517"},"server":"78.153.139.68","servername":"images.apple.com","skip-cert-verify":false,"tls":true,"type":"vless","udp":true,"uuid":"fd8972d7-cf5e-11f0-9970-45e1d80c4039"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 186 | ⬇️ 1KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss","udp":true}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇬🇧 GB 187 | ⬇️ 9MB/s","network":"ws","port":443,"server":"198.62.62.124","servername":"war.connecticut-haloo.info","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"war.connecticut-haloo.info"},"path":"/love"}}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇵🇱 PL 188 | ⬇️ 22KB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"FkmYFobwxLMLEktYXywmjthuEYCZggITsxwPNasTKUg","short-id":"3f200574d011010f"},"server":"84.201.158.199","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"42191252-2937-404a-a982-04519c71e26a"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇺🇸 US 189 | ⬇️ 15MB/s","network":"ws","port":443,"server":"198.62.62.248","servername":"tar.alabama-tigr.info","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"5a4abb78-ecd7-4d68-ab2a-c11a3842f261","ws-opts":{"headers":{"Host":"tar.alabama-tigr.info"},"path":"/love"}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 190 | ⬇️ 1KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.123","type":"ss","udp":true}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇩🇪 DE 191 | ⬇️ 43KB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"FkmYFobwxLMLEktYXywmjthuEYCZggITsxwPNasTKUg","short-id":"95ec618532fa065e"},"server":"84.201.135.163","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"42191252-2937-404a-a982-04519c71e26a"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 192 | ⬇️ 1MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.207","type":"ss"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 193 | ⬇️ 7MB/s","network":"ws","port":2052,"server":"104.18.32.47","type":"vless","udp":true,"uuid":"5e62ddcf-78c9-4b15-803a-436c8c839ddc","ws-opts":{"headers":{"Host":"oBEDiENt-noiseqJf5ja18yF.wIndLer.CO.UK.","User-Agent":"Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36"},"path":"/"},"xudp":true}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇹🇼 TW 194 | ⬇️ 8MB/s","network":"ws","password":"22367c45-f6c4-4ca8-8d52-d9787d7bbe91","port":2096,"server":"mfa.gov.ua","sni":"cm22-bgphhh.pages.dev","type":"trojan","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","max-early-data":2560,"path":"/dl/ep/page/proxyip=45.196.239.151,167.253.153.161,45.196.239.238,45.196.238.248,45.196.238.145,223.165.4.57,85.237.207.19,167.253.153.80"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇭🇰 HK 195 | ⬇️ 15MB/s","network":"tcp","password":"BxceQaOe","port":443,"server":"58.152.25.253","skip-cert-verify":true,"sni":"t.me%2Fripaojiedian","type":"trojan"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 196 | ⬇️ 19KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇰🇷 KR 197 | ⬇️ 6MB/s","network":"ws","port":14238,"server":"223.222.213.164","servername":"sub.mot.ip-ddns.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"00000000-0000-4000-8000-000000000000","ws-opts":{"headers":{"Host":"sub.mot.ip-ddns.com"},"path":"/"}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 198 | ⬇️ 444KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","tfo":false,"type":"ss"}
+ - {"client-fingerprint":"chrome","country":"🇭🇰HK","name":" t.me/PFSub | 🇭🇰 HK 199 | ⬇️ 5MB/s","network":"tcp","password":"BxceQaOe","port":443,"server":"58.152.25.253","skip-cert-verify":true,"sni":"t.me/ripaojiedian","type":"trojan","udp":true}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 200 | ⬇️ 4KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 201 | ⬇️ 1KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss","udp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 202 | ⬇️ 1KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.236","type":"ss"}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇹🇷 TR 203 | ⬇️ 10KB/s","network":"tcp","port":443,"reality-opts":{"public-key":"vgmo5AxgVJfSME3mlK4ulM4HeVAn6eS2UO9wYEPNFiY","short-id":"065bdd7d1aa43b1d"},"server":"89.169.0.23","servername":"mid-tr1.a-svc.com","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"1719a423-501b-405e-a818-96ff272aa0e3"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇩🇪 DE 204 | ⬇️ 856KB/s","network":"ws","password":"8r\u003c[9'l6hAO#8ZQi","port":8443,"server":"172.66.44.230","skip-cert-verify":false,"sni":"Koma-YT.PAGeS.Dev","type":"trojan","udp":true,"ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"User-Agent":"Mozilla/5.0 (Linux; Android 6.0.1; SM-G532M Build/MMB29T) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.91 Mobile Safari/537.36"},"max-early-data":2560,"path":"/tro8sFW1S91B6sZrM1"}}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 205 | ⬇️ 3KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.123","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 206 | ⬇️ 578KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 207 | ⬇️ 16KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 208 | ⬇️ 9KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.236","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 209 | ⬇️ 227KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 210 | ⬇️ 16KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 211 | ⬇️ 27KB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"FkmYFobwxLMLEktYXywmjthuEYCZggITsxwPNasTKUg","short-id":"a76ea384b29a4f79"},"server":"37.9.4.183","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"42191252-2937-404a-a982-04519c71e26a"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇳🇱 NL 212 | ⬇️ 56KB/s","network":"ws","port":80,"server":"mx2.tehrantolidi.ir","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"dfe13f5a-9ce4-44fc-be96-1067bbf9202d","ws-opts":{"headers":{"Host":"cdn123.global.ssl.fastly.net"},"path":"/site"}}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 213 | ⬇️ 31KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.206","type":"ss","udp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 214 | ⬇️ 11KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.189","type":"ss"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇳🇱 NL 215 | ⬇️ 29KB/s","network":"ws","port":80,"server":"mx2.tehrantolidi.ir","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"dfe13f5a-9ce4-44fc-be96-1067bbf9202d","ws-opts":{"headers":{"Host":"cdn123.global.ssl.fastly.net"},"path":"/site"}}
+ - {"client-fingerprint":"chrome","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 216 | ⬇️ 5MB/s","network":"tcp","port":443,"reality-opts":{"public-key":"e2RLf57Li_-MDZGE9ss1BWPgP54mqRb5PfXhW2jcVVg","short-id":"c39cc7310a"},"server":"143.20.236.51","servername":"yahoo.com","tls":true,"type":"vless","udp":true,"uuid":"d65cc14c-f53f-4fe2-b262-97856601319c","xudp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 217 | ⬇️ 4KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.70","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 218 | ⬇️ 2MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.139","type":"ss"}
+ - {"name":" t.me/PFSub | 🇭🇰 HK 219 | ⬇️ 22MB/s","port":50161,"server":"13.70.6.6","type":"socks5","udp":true}
+ - {"client-fingerprint":"random","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 220 | ⬇️ 2MB/s","network":"tcp","port":443,"server":"s124.okgfw.top","servername":"u710297uf57fs124.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"client-fingerprint":"ios","encryption":"none","grpc-opts":{"grpc-service-name":"ssp","headers":{"Host":"s717.okgfw.top"}},"name":" t.me/PFSub | 🇷🇺 RU 221 | ⬇️ 4MB/s","network":"grpc","port":443,"server":"s717.okgfw.top","servername":"u710297u64bes717.okgfw.top","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇸🇬 SG 222 | ⬇️ 10MB/s","network":"ws","port":2053,"server":"pages.cloudflare.com","servername":"wqdo76ww8ndc.chinat.indevs.in","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"26524cce-d514-4014-a426-365fb266a14d","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"wqdo76ww8ndc.chinat.indevs.in"},"max-early-data":2560,"path":"/danfeng"}}
+ - {"cipher":"aes-256-cfb","country":"���ZZ","name":" t.me/PFSub | 🇻🇳 VN 223 | ⬇️ 3MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.206","type":"ss"}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 224 | ⬇️ 1MB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇺🇸 US 225 | ⬇️ 719KB/s","network":"ws","port":8880,"server":"africa.visa.com","type":"vless","udp":true,"uuid":"623d675e-8748-4881-ac0f-dc1a10b595b1","ws-opts":{"early-data-header-name":"Sec-WebSocket-Protocol","headers":{"Host":"vahidasd1988-se08ot-3.vahidasd1988.workers.dev","User-Agent":"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"},"max-early-data":2560,"path":"/"},"xudp":true}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 226 | ⬇️ 7KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.123","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 227 | ⬇️ 12KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.154.158","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 228 | ⬇️ 882KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","skip-cert-verify":false,"type":"ss","udp":false}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 229 | ⬇️ 31KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇻🇳 VN 230 | ⬇️ 5KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.36","type":"ss","udp":true}
+ - {"client-fingerprint":"ios","encryption":"none","grpc-opts":{"grpc-service-name":"ssp"},"name":" t.me/PFSub | 🇺🇸 US 231 | ⬇️ 41KB/s","network":"grpc","port":443,"server":"s702.okgfw.top","servername":"u710297ub3e1s702.okgfw.top","tls":true,"type":"vless","udp":true,"uuid":"f81b7cb0-70c6-3d1a-9b30-c95b1227f6ed","xudp":true}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 232 | ⬇️ 184KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.129","type":"ss"}
+ - {"client-fingerprint":"chrome","encryption":"none","name":" t.me/PFSub | 🇳🇱 NL 233 | ⬇️ 7MB/s","network":"ws","port":2052,"server":"104.18.32.47","skip-cert-verify":false,"tls":false,"type":"vless","uuid":"5e62ddcf-78c9-4b15-803a-436c8c839ddc","ws-opts":{"headers":{"Host":"oBEDiENt-noiseqJf5ja18yF.wIndLer.CO.UK."},"path":"/"}}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇭🇰 HK 234 | ⬇️ 19KB/s","network":"ws","port":443,"server":"139.196.41.153","servername":"ylnhh.cc.cd","tls":true,"type":"vless","udp":true,"uuid":"14b02e2a-8930-4afb-8412-ea4a4954ca5b","ws-opts":{"headers":{"Host":"ylnhh.cc.cd","User-Agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.94 Safari/537.36"},"path":"/gs5=6666:6666@47.239.178.125:6666"},"xudp":true}
+ - {"client-fingerprint":"chrome","name":" t.me/PFSub | 🇳🇱 NL 235 | ⬇️ 13MB/s","network":"ws","port":2052,"server":"104.18.32.47","tls":false,"type":"vless","uuid":"5e62ddcf-78c9-4b15-803a-436c8c839ddc","ws-opts":{"headers":{"Host":"oBEDiENt-noiseqJf5ja18yF.wIndLer.CO.UK."},"path":"/"}}
+ - {"client-fingerprint":"qq","encryption":"none","flow":"xtls-rprx-vision","name":" t.me/PFSub | 🇳🇱 NL 236 | ⬇️ 4MB/s","network":"tcp","port":443,"reality-opts":{"_spider-x":"/","public-key":"FkmYFobwxLMLEktYXywmjthuEYCZggITsxwPNasTKUg","short-id":"33554379411b3219"},"server":"84.201.174.221","servername":"api-maps.yandex.ru","skip-cert-verify":false,"tls":true,"type":"vless","uuid":"42191252-2937-404a-a982-04519c71e26a"}
+ - {"cipher":"aes-256-gcm","name":" t.me/PFSub | 🇯🇵 JP 237 | ⬇️ 32KB/s","password":"g4JtpkuxkwRH4jhj","port":19822,"server":"iepl.huli168.com","type":"ss","udp":true}
+ - {"cipher":"aes-256-cfb","country":"🏁ZZ","name":" t.me/PFSub | 🇻🇳 VN 238 | ⬇️ 66KB/s","password":"Xn8jKdmDM00IeO%#$#fJAMtsEAEUOpH/YWYtYqDFnT0SV","port":38388,"server":"103.186.155.27","type":"ss"}
+ - {"cipher":"aes-256-cfb","name":" t.me/PFSub | 🇪🇸 ES 239 | ⬇️ 1MB/s","password":"ZET59LF6DvCC8KVt","port":9005,"server":"5.188.181.201","type":"ss","udp":true}
